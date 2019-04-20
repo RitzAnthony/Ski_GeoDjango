@@ -1,0 +1,12 @@
+docker exec -it geoweb_web_1 python manage.py createsuperuser
+
+user: docker
+password: docker
+
+
+other commands:
+docker-compose run web sh -c "./manage.py startapp slopes"
+
+
+docker-compose run web sh -c "./manage.py makemigrations slopes"
+docker-compose run web sh -c "./manage.py migrate --fake"
