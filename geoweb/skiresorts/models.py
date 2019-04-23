@@ -6,7 +6,7 @@ class Skiresort(models.Model):
     geom = models.MultiPolygonField(srid=21781, null=True)
 
     class Meta:
-        db_table = "ski resorts"
+        db_table = "skiresorts"
 
     def __str__(self):
         return self.name

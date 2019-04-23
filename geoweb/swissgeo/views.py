@@ -4,7 +4,7 @@ from django.template import loader
 from django.http import Http404
 from django.core.serializers import serialize
 
-from .models import City,Canton
+from .models import City, Canton
 
 # Create your views here.
 
@@ -40,10 +40,10 @@ def canton(request,canton_name):
 
 def cantons(request):
     context ={  }
-    return render(request,'swissgeo/cantons.html',context)
+    return render(request, 'swissgeo/cantons.html', context)
 
 def cantonsdata(request):
     cantons=Canton.objects.all()
-    ser=serialize('geojson',cantons,geometry_field='geom',fields=('name',))
+    ser=serialize('geojson', cantons, geometry_field='geom', fields=('name',))
     
     return HttpResponse(ser)

@@ -12,9 +12,9 @@ RUN cd gdal-2.2.2; ./configure; make; make install
 
 RUN mkdir /code
 WORKDIR /code
-ADD requirements.txt /code
-RUN pip install -r requirements.txt
-ADD . /code/
+COPY requirements.txt /code
+RUN pip install --requirement requirements.txt
+COPY . /code/
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

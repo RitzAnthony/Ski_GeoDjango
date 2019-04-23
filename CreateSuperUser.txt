@@ -10,3 +10,6 @@ docker-compose run web sh -c "./manage.py startapp slopes"
 
 docker-compose run web sh -c "./manage.py makemigrations slopes"
 docker-compose run web sh -c "./manage.py migrate --fake"
+
+
+docker exec -it geoweb_web_1 /bin/bash

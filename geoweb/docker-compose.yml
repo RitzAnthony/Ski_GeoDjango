@@ -14,7 +14,7 @@ services:
       - "5433:5432"
 
   web:
-    #build: .
+    build: .
     #image: geoweb_web
     image: jpcik/geoweb
     command: ./manage.py runserver 0.0.0.0:8000
