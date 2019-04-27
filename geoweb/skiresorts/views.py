@@ -1,6 +1,5 @@
 
 from django.shortcuts import render
-from swissgeo.models import Canton
 from .models import Skiresort
 from django.core.serializers import serialize
 from shapely.geometry import MultiPolygon

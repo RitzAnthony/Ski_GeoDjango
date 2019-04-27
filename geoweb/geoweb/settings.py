@@ -33,7 +33,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'swissgeo.apps.SwissgeoConfig',
+    #'swissgeo.apps.SwissgeoConfig',
+    'skiresorts',
+    'home',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,9 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'home'
     'slopes',
-    'skiresorts',
     'leaflet',
 ]
 
