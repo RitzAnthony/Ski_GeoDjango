@@ -1,9 +1,15 @@
 from django.contrib.gis.db import models
-
+from skiresorts.models import Skiresort
 
 class Slope(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, null=True)
     geom = models.MultiPolygonField(srid=21781, null=True)
+    highway = models.CharField(max_length=200, null=True)
+    aerialway = models.CharField(max_length=200, null=True)
+    other_tags = models.CharField(max_length=500, null=True)
+    skiresort = models.ForeignKey(Skiresort, on_delete=models.CASCADE,
+                                  null=True,
+                                  db_column='fk_skiresort')
 
     class Meta:
         db_table = "slopes"
