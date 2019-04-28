@@ -8,7 +8,7 @@ other commands:
 docker-compose run web sh -c "./manage.py startapp home"
 
 
-docker-compose run web sh -c "./manage.py makemigrations skiresorts"
+docker-compose run web sh -c "./manage.py makemigrations slopes"
 docker-compose run web sh -c "./manage.py migrate --fake"
 
 

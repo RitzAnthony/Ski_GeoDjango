@@ -90,7 +90,7 @@
                 layer.bindPopup('test');
             }
             var content =
-                '<<form action="/skiresorts/updateslope.html" method="GET">\n' +
+                '<<form action="/skiresorts/updateslope/'+ feature.properties.pk +'" method="POST">\n' +
                 '<div class="form-group">\n' +
                 '    <h4 class="form-check-label">Slope <span class="badge badge-success">Open</span></h4>\n' +
                 '</div>\n' +
@@ -107,6 +107,8 @@
                 click: zoomToFeature
             });
         }
+
+        console.log(skiresort)
 
         function zoomToFeature(e) {
             //themap.fitBounds(e.target.getBounds());

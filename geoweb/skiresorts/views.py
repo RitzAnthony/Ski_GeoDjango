@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Skiresort
 from django.core.serializers import serialize
 from shapely.geometry import MultiPolygon
@@ -40,18 +40,22 @@ def details_view(request, skiresort_id):
 
     slopes = Slope.objects.filter(skiresort_id=skiresort_id, other_tags__contains='piste')
 
-    ser = serialize('geojson', slopes, geometry_field='geom', fields=('name', 'other_tags', 'aerialway'))
+    ser = serialize('geojson', slopes, geometry_field='geom', fields=('pk', 'name', 'other_tags', 'aerialway', 'enabled'))
     return render(request, 'details.html', {'skiresorts': ser})
 
 @csrf_exempt
-def update_slope_view(request):
-    print('teeeeeessst')
+def update_slope_view(request, slope_id):
 
-    return render(request, 'resorts.html')
+    slope = Slope.objects.filter(id=slope_id)[0]
+    print('before ' + str(slope.status))
+    slope.status = not slope.status
+    slope.save()
+    print('after ' + str(slope.status))
+    return redirect('details', skiresort_id=slope.skiresort_id)
 
 
 def popup_view(request):
-    return render(request, 'popup.html', {})
+    return render(request, 'popup.html')
 
 
 def resort_popup_view(request, skiresort_id):
