@@ -18,30 +18,11 @@ def resorts_view(request):
 
 
 def details_view(request, skiresort_id):
-    '''
-    canton_of_valais = Canton.objects.filter(name='Valais')[0]
-    valaisShape = wkt.loads(canton_of_valais.geom.wkt).convex_hull
+    slopes = Slope.objects.filter(skiresort_id=skiresort_id)
+    name = slopes[1].skiresort.name
 
-    skiresorts = Skiresort.objects.all()
-
-    result = []
-
-    for resort in skiresorts:
-        resortShape = wkt.loads(resort.geom.wkt).convex_hull
-        if valaisShape.contains(resortShape):
-            result.append(resort)
-
-
-    ser = serialize('geojson', result, geometry_field='geom', fields=('name',))
-
-    for val in result:
-        print(val.geom.wkt)
-    '''
-
-    slopes = Slope.objects.filter(skiresort_id=skiresort_id, other_tags__contains='piste')
-
-    ser = serialize('geojson', slopes, geometry_field='geom', fields=('pk', 'name', 'other_tags', 'aerialway', 'enabled'))
-    return render(request, 'details.html', {'skiresorts': ser})
+    ser = serialize('geojson', slopes, geometry_field='geom', fields=('pk', 'name', 'other_tags', 'aerialway', 'status'))
+    return render(request, 'details.html', {'skiresorts': ser, 'name': name})
 
 @csrf_exempt
 def update_slope_view(request, slope_id):

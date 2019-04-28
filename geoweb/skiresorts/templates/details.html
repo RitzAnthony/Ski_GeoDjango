@@ -2,10 +2,9 @@
 
 {% block container %}
 
-    <h1>Ski resorts</h1>
+    <h1 class="pt-4">Slopes in {{ name }} </h1>
 
     <div id="swissmap" style="height: 600px"></div>
-
 
 
     <script type="text/javascript">
@@ -30,6 +29,10 @@
         function slopeStyle (feature){
             let style = {weight: 7};
 
+            if(feature.properties.status === false) {
+                style.color = '#74726f';
+                return style
+            }
             if(feature.properties.aerialway !==null) {
                 style.color = '#00ff22';
                 return style
@@ -52,13 +55,11 @@
                         style.color = '#59f0ff';
                         break;
                     default:
-                        style.color = '#00ff22';
+                        style.color = '#ff7f00';
                 }
                 return style
             }
         }
-
-
 
 
         //highlight a go feature
@@ -89,14 +90,22 @@
             else{
                 layer.bindPopup('test');
             }
+            slopeName  = (feature.properties.aerialway == null) ? '' : feature.properties.aerialway + ' ';
+            slopeName += (feature.properties.name == null) ? '' : feature.properties.name + ' ';
+            badgeTag = (feature.properties.status) ?'<span class="badge badge-success">Open</span>' :
+                '<span class="badge badge-danger">Closed</span>'
+            buttonText = (feature.properties.status) ? 'Close Pathway' : 'Open Pathway';
+            infoText = (feature.properties.status) ? 'In case of avalanche danger close this pathway now!' :
+                                                        'Is the pathway really safe? Then open it now.';
+
             var content =
-                '<<form action="/skiresorts/updateslope/'+ feature.properties.pk +'" method="POST">\n' +
+                '<form action="/skiresorts/updateslope/'+ feature.properties.pk +'" method="POST">\n' +
                 '<div class="form-group">\n' +
-                '    <h4 class="form-check-label">Slope <span class="badge badge-success">Open</span></h4>\n' +
+                '    <h4 class="form-check-label">' + slopeName + badgeTag + '</h4>\n' +
                 '</div>\n' +
                 '<div class="form-group">\n' +
-                '    <input type="checkbox" checked hidden>\n' +
-                '    <input type="submit" value="submit" class="btn btn-primary">\n' +
+                '<h6>' + infoText + '</h6>' +
+                '    <input type="submit" value="'+ buttonText +'" class="btn btn-primary">\n' +
                 '  </div>\n' +
                 '</form>'
 
@@ -107,8 +116,6 @@
                 click: zoomToFeature
             });
         }
-
-        console.log(skiresort)
 
         function zoomToFeature(e) {
             //themap.fitBounds(e.target.getBounds());

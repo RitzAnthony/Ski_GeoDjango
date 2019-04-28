@@ -2,7 +2,7 @@
 
 {% block container %}
 
-<h1>Ski Resorts in Valais</h1>
+<h1 class="pt-4">Ski Resorts in Valais</h1>
 
 <div id="swissmap" style="height: 600px"></div>
 
@@ -64,7 +64,7 @@
                  '<div>\n' +
                  '    <h5>' + feature.properties.name + '</h5>\n' +
                  '    <p>Open or close pistes in this region</p>\n' +
-                 '    <a href="'+ feature.properties.pk +'" class="btn btn-primary">Edit slopes</a>\n' +
+                 '    <a href="'+ feature.properties.pk +'" class="btn btn-primary" style="color: white">Edit slopes</a>' +
                  '</div>';
 
         layer.bindPopup(content)
