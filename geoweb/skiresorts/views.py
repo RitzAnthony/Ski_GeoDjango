@@ -5,11 +5,19 @@ from django.core.serializers import serialize
 from shapely.geometry import MultiPolygon
 from shapely import wkt
 from slopes.models import Slope
+from django.views.decorators.csrf import csrf_exempt
 
 
 
 
-def index(request):
+def resorts_view(request):
+    resorts = Skiresort.objects.filter(enabled=True)
+
+    ser = serialize('geojson', resorts, geometry_field='geom', fields=('pk', 'name'))
+    return render(request, 'resorts.html', {'resorts': ser})
+
+
+def details_view(request, skiresort_id):
     '''
     canton_of_valais = Canton.objects.filter(name='Valais')[0]
     valaisShape = wkt.loads(canton_of_valais.geom.wkt).convex_hull
@@ -30,18 +38,24 @@ def index(request):
         print(val.geom.wkt)
     '''
 
-    slopes = Slope.objects.filter(skiresort__name__icontains='saint luc')
+    slopes = Slope.objects.filter(skiresort_id=skiresort_id, other_tags__contains='piste')
 
     ser = serialize('geojson', slopes, geometry_field='geom', fields=('name', 'other_tags', 'aerialway'))
-    return render(request, 'index.html', {'skiresorts': ser})
+    return render(request, 'details.html', {'skiresorts': ser})
+
+@csrf_exempt
+def update_slope_view(request):
+    print('teeeeeessst')
+
+    return render(request, 'resorts.html')
 
 
-def slope_update_view(request):
-    print(request.POST)
-    slope = request.POST.get('slope')
+def popup_view(request):
+    return render(request, 'popup.html', {})
 
-    slopes = Slope.objects.filter(skiresort__name__icontains='saint luc')
 
-    ser = serialize('geojson', slopes, geometry_field='geom', fields=('name', 'other_tags', 'aerialway'))
+def resort_popup_view(request, skiresort_id):
+    resort = Skiresort.objects.filter(id=skiresort_id)
+    return render(request, 'resort_popup.html', {'resort': resort})
 
-    return render(request, 'index.html', {'skiresorts': ser})
+

@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+    <h1>Ski resorts</h1>
+
+    <div id="swissmap" style="height: 600px"></div>
+
+
+
+    <script type="text/javascript">
+        var themap = new L.Map('swissmap', {
+            crs: L.CRS.EPSG3857,
+            continuousWorld: true,
+            worldCopyJump: false
+        });
+        var url = 'https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg';
+        var tilelayer = new L.tileLayer(url);
+        themap.addLayer(tilelayer);
+        themap.setView(L.latLng(46.57591, 7.84956), 8);
+
+
+
+        var skiresort = {{ skiresorts | safe }};
+        var myLayer = L.geoJSON(skiresort, {
+            style: slopeStyle,
+            onEachFeature: onEachFeature
+        }).addTo(themap);
+
+        function slopeStyle (feature){
+            let style = {weight: 7};
+
+            if(feature.properties.aerialway !==null) {
+                style.color = '#00ff22';
+                return style
+            }
+            if(feature.properties.other_tags !== null){
+                switch (getSlopeDifficulty(feature.properties.other_tags)) {
+                    case "easy":
+                        style.color = '#0001ff';
+                        break;
+                    case "intermediate":
+                        style.color = '#ff0000';
+                        break;
+                    case "advanced":
+                        style.color = '#ff0000';
+                        break;
+                    case "advanced":
+                        style.color = '#000000';
+                        break;
+                    case "skitour":
+                        style.color = '#59f0ff';
+                        break;
+                    default:
+                        style.color = '#00ff22';
+                }
+                return style
+            }
+        }
+
+
+
+
+        //highlight a go feature
+
+        function highlightFeature(e) {
+            var layer = e.target;
+
+            layer.setStyle({
+                weight: 10,
+                color: '#666',
+                dashArray: '',
+                fillOpacity: 0.7
+            });
+
+            layer.bringToFront();
+
+        }
+
+        function resetHighlight(e) {
+            myLayer.resetStyle(e.target);
+        }
+
+        // assign event handlers for mouseover, mouseout, click
+        function onEachFeature(feature, layer) {
+            if (feature.properties.name) {
+                layer.bindPopup(feature.properties.name);
+            }
+            else{
+                layer.bindPopup('test');
+            }
+            var content =
+                '<<form action="/skiresorts/updateslope.html" method="GET">\n' +
+                '<div class="form-group">\n' +
+                '    <h4 class="form-check-label">Slope <span class="badge badge-success">Open</span></h4>\n' +
+                '</div>\n' +
+                '<div class="form-group">\n' +
+                '    <input type="checkbox" checked hidden>\n' +
+                '    <input type="submit" value="submit" class="btn btn-primary">\n' +
+                '  </div>\n' +
+                '</form>'
+
+            layer.bindPopup(content)
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: zoomToFeature
+            });
+        }
+
+        function zoomToFeature(e) {
+            //themap.fitBounds(e.target.getBounds());
+        }
+
+        function getSlopeDifficulty (other_tag){
+            if(other_tag !== null){
+                if(other_tag.includes('"piste:difficulty"=>"easy"')){
+                    return 'easy'
+                }
+                else if(other_tag.includes('"piste:difficulty"=>"intermediate"')){
+                    return 'intermediate'
+                }
+                else if(other_tag.includes('"piste:difficulty"=>"advanced"')){
+                    return 'advanced'
+                }
+                else if(other_tag.includes('"piste:type"=>"skitour"')){
+                    return 'skitour'
+                }
+
+
+                else{
+                    return null
+                }
+            }
+        }
+
+    </script>
+{% endblock %}

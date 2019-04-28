@@ -8,7 +8,7 @@
 
     {% block head %}
     <head>
-        <meta charset="utf-8">
+        <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         {% block title %}{% endblock %}
@@ -76,11 +76,12 @@
             </footer>
         {% endblock %}
 
-        <script src="{% static 'js/jquery.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'js/js.cookie.js' %}"></script>
-        <script src="{% static 'js/csrf.js' %}"></script>
+        {#<script src="{% static 'js/jquery.min.js' %}"></script>#}
+        {#<script src="{% static 'js/popper.min.js' %}"></script>#}
+        {#<script src="{% static 'js/bootstrap.min.js' %}"></script>#}
+        {#<script src="{% static 'js/js.cookie.js' %}"></script>#}
+        {#<script src="{% static 'js/csrf.js' %}"></script>#}
+
         {% block extra_js %}{% endblock %}
 
     </body>

@@ -2,13 +2,10 @@
 
 {% block container %}
 
-<h1>Ski resorts</h1>
+<h1>Ski Resorts in Valais</h1>
+
 <div id="swissmap" style="height: 600px"></div>
 
-<form action="./update_slope.html" method="POST">
-    <p>Slope</p>
-    <div><input type="checkbox" name="open" value="true"><p>open</p></div>
-</form>
 
 <script type="text/javascript">
     var themap = new L.Map('swissmap', {
@@ -23,35 +20,13 @@
 
 
 
-    var skiresort = {{ skiresorts | safe }};
+    var skiresort = {{ resorts | safe }};
     var myLayer = L.geoJSON(skiresort, {
-        style: slopeStyle,
+
         onEachFeature: onEachFeature
     }).addTo(themap);
 
-    function slopeStyle (feature){
-        let style = {weight: 7};
 
-        if(feature.properties.aerialway !==null) {
-            style.color = '#00ff22';
-            return style
-        }
-        if(feature.properties.other_tags !== null){
-            if(feature.properties.other_tags.includes('"piste:difficulty"=>"easy"')){
-                style.color = '#0001ff';
-            }
-            else if(feature.properties.other_tags.includes('"piste:difficulty"=>"intermediate"')){
-                style.color = '#ff0000';
-            }
-            else if(feature.properties.other_tags.includes('"piste:difficulty"=>"advanced"')){
-                style.color = '#000000'
-            }
-            else{
-                style.color = '#00ff22'
-            }
-            return style
-        }
-    }
 
 
 
@@ -78,6 +53,7 @@
 
     // assign event handlers for mouseover, mouseout, click
     function onEachFeature(feature, layer) {
+        console.log(feature)
         if (feature.properties.name) {
             layer.bindPopup(feature.properties.name);
         }
@@ -85,6 +61,11 @@
             layer.bindPopup('test');
         }
              var content =
+                 '<div>\n' +
+                 '    <h5>' + feature.properties.name + '</h5>\n' +
+                 '    <p>Open or close pistes in this region</p>\n' +
+                 '    <a href="'+ feature.properties.pk +'" class="btn btn-primary">Edit slopes</a>\n' +
+                 '</div>';
 
         layer.bindPopup(content)
         layer.on({
@@ -98,22 +79,11 @@
         //themap.fitBounds(e.target.getBounds());
     }
 
-    function getSlopeDifficulty (other_tag){
-        if(other_tag !== null){
-            if(other_tag.includes('"piste:difficulty"=>"easy"')){
-                return 'easy'
-            }
-            else if(other_tag.includes('"piste:difficulty"=>"intermediate"')){
-                return 'intermediate'
-            }
-            else if(other_tag.includes('"piste:difficulty"=>"advanced"')){
-                return 'advanced'
-            }
-            else{
-                return null
-            }
-        }
+    function replaceUTF8(utf8){
+
+
     }
+
 
 </script>
 {% endblock %}

@@ -21,7 +21,7 @@ urlpatterns = [
     #path('swissgeo/', include('swissgeo.urls')),
     path('admin/', admin.site.urls),
     path('skiresorts/', include('skiresorts.urls')),
-    url(r'^$', include('home.urls')),
+    path('', include('home.urls')),
 
 
 ]
