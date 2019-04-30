@@ -7,9 +7,6 @@ from shapely import wkt
 from slopes.models import Slope
 from django.views.decorators.csrf import csrf_exempt
 
-
-
-
 def resorts_view(request):
     resorts = Skiresort.objects.filter(enabled=True)
 
@@ -19,10 +16,11 @@ def resorts_view(request):
 
 def details_view(request, skiresort_id):
     slopes = Slope.objects.filter(skiresort_id=skiresort_id)
-    name = slopes[1].skiresort.name
+    name = slopes[0].skiresort.name
 
     ser = serialize('geojson', slopes, geometry_field='geom', fields=('pk', 'name', 'other_tags', 'aerialway', 'status'))
     return render(request, 'details.html', {'skiresorts': ser, 'name': name})
+
 
 @csrf_exempt
 def update_slope_view(request, slope_id):
@@ -42,5 +40,3 @@ def popup_view(request):
 def resort_popup_view(request, skiresort_id):
     resort = Skiresort.objects.filter(id=skiresort_id)
     return render(request, 'resort_popup.html', {'resort': resort})
-
-

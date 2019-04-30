@@ -6,6 +6,64 @@
 
     <div id="swissmap" style="height: 600px"></div>
 
+    <h2 class="pt-5 pb-4">Legend</h2>
+
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Type</th>
+      <th scope="col">Slope difficulty</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row" bgcolor="#0001ff"></th>
+      <td>Slope</td>
+      <td>easy</td>
+      <td>open</td>
+    </tr>
+    <tr>
+      <th scope="row" bgcolor="#ff0000"></th>
+      <td>Slope</td>
+      <td>intermediate</td>
+      <td>open</td>
+    </tr>
+    <tr>
+      <th scope="row" bgcolor="#000000"></th>
+      <td>Slope</td>
+      <td>advanced</td>
+      <td>open</td>
+    </tr>
+    <tr>
+      <th scope="row" bgcolor="#59f0ff"></th>
+      <td>Skitour</td>
+      <td>experience needed</td>
+      <td>open</td>
+    </tr>
+    <tr>
+      <th scope="row" bgcolor="#00ff22"></th>
+      <td>Lift</td>
+      <td></td>
+      <td>open</td>
+    </tr>
+    <tr>
+      <th scope="row" bgcolor="#ff7f00"></th>
+      <td>Other</td>
+      <td></td>
+      <td>open</td>
+    </tr>
+    <tr>
+      <th scope="row" bgcolor="#74726f"></th>
+      <td>Any</td>
+      <td></td>
+      <td>closed</td>
+    </tr>
+
+  </tbody>
+</table>
+
 
     <script type="text/javascript">
         var themap = new L.Map('swissmap', {
@@ -43,9 +101,6 @@
                         style.color = '#0001ff';
                         break;
                     case "intermediate":
-                        style.color = '#ff0000';
-                        break;
-                    case "advanced":
                         style.color = '#ff0000';
                         break;
                     case "advanced":
